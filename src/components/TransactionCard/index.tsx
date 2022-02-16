@@ -2,21 +2,38 @@ import React from 'react';
 
 import { Container, Title, Amount, Footer, Category, Icon, CategoryName, Date } from './styles';
 
-export const TransactionCard: React.FC = () => {
+interface Category {
+  name: string;
+  icon: string;
+}
+
+interface IData {
+  title: string;
+  amount: string;
+  category: Category;
+  date: string;
+}
+
+interface Props {
+  data: IData;
+}
+
+export function TransactionCard({ data }: Props) {
+  const { title, amount, category, date } = data;
   return (
     <Container>
-      <Title>Desenvolvimento de site</Title>
+      <Title>{title}</Title>
 
-      <Amount>R$ 12.000,00</Amount>
+      <Amount>{amount}</Amount>
 
       <Footer>
         <Category>
           <Icon name="dollar-sign" />
 
-          <CategoryName>Vendas</CategoryName>
+          <CategoryName>{category.name}</CategoryName>
         </Category>
-        <Date>13/04/2020</Date>
+        <Date>{date}</Date>
       </Footer>
     </Container>
   );
-};
+}
