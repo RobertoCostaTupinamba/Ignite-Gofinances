@@ -7,7 +7,8 @@ interface Category {
   icon: string;
 }
 
-interface IData {
+export interface TransactionCardProps {
+  type: 'positive' | 'negative';
   title: string;
   amount: string;
   category: Category;
@@ -15,20 +16,23 @@ interface IData {
 }
 
 interface Props {
-  data: IData;
+  data: TransactionCardProps;
 }
 
 export function TransactionCard({ data }: Props) {
-  const { title, amount, category, date } = data;
+  const { type, title, amount, category, date } = data;
   return (
     <Container>
       <Title>{title}</Title>
 
-      <Amount>{amount}</Amount>
+      <Amount type={type}>
+        {type === 'negative' && '- '}
+        {amount}
+      </Amount>
 
       <Footer>
         <Category>
-          <Icon name="dollar-sign" />
+          <Icon name={category.icon} />
 
           <CategoryName>{category.name}</CategoryName>
         </Category>
