@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
+import { Alert, Keyboard, Modal } from 'react-native';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -13,6 +13,7 @@ import { CategorySelectButton } from '../../components/Form/CategorySelectButton
 import { CategorySelect } from '../../screens/CategorySelect';
 
 import { Container, Header, Title, Form, Fields, TransactionsType } from './styles';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 interface FormData {
   [name: string]: any;
@@ -46,10 +47,13 @@ export function Register() {
   }
 
   function handleOpenSelectCategoryModal() {
+    console.log('b');
     setCategoryModalOpen(true);
   }
 
   function handleCloseSelectCategoryModal() {
+    console.log('a');
+
     setCategoryModalOpen(false);
   }
 
@@ -72,7 +76,7 @@ export function Register() {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }} containerStyle={{ flex: 1 }}>
       <Container>
         <Header>
           <Title>Cadastro</Title>
