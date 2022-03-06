@@ -16,6 +16,7 @@ import { CategorySelect } from '../CategorySelect';
 import { Container, Header, Title, Form, Fields, TransactionsType } from './styles';
 
 interface FormData {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [name: string]: any;
 }
 
@@ -45,7 +46,7 @@ export function Register() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  function handleTransactionTypeSelect(type: 'up' | 'down') {
+  function handleTransactionTypeSelect(type: 'positive' | 'negative') {
     setTransactionType(type);
   }
 
@@ -71,7 +72,7 @@ export function Register() {
       id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionsType,
+      type: transactionsType,
       category: category.key,
       date: new Date(),
     };
@@ -128,16 +129,16 @@ export function Register() {
 
             <TransactionsType>
               <TransactionTypeButton
-                isActive={transactionsType === 'up'}
+                isActive={transactionsType === 'positive'}
                 type="up"
                 title="Income"
-                onPress={() => handleTransactionTypeSelect('up')}
+                onPress={() => handleTransactionTypeSelect('positive')}
               />
               <TransactionTypeButton
-                isActive={transactionsType === 'down'}
+                isActive={transactionsType === 'negative'}
                 type="down"
                 title="Outcome"
-                onPress={() => handleTransactionTypeSelect('down')}
+                onPress={() => handleTransactionTypeSelect('negative')}
               />
             </TransactionsType>
 
