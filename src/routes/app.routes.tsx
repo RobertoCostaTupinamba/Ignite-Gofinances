@@ -1,10 +1,12 @@
-import React from 'react';
-import { useTheme } from 'styled-components';
+/* eslint-disable react/no-unstable-nested-components */
+import { MaterialIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React from 'react';
+import { Platform } from 'react-native';
+import { useTheme } from 'styled-components';
+
 import { Dashboard } from '../screens/Dashboard';
 import { Register } from '../screens/Register';
-import { Platform } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 

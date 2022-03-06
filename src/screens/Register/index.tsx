@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { Alert, Keyboard, Modal } from 'react-native';
-import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation, NavigationProp, ParamListBase } from '@react-navigation/native';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { InputForm } from '../../components/Form/InputForm';
-import { Button } from '../../components/Form/Button';
-import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
-import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
-
-import { CategorySelect } from '../../screens/CategorySelect';
-
-import { Container, Header, Title, Form, Fields, TransactionsType } from './styles';
+import { Alert, Keyboard, Modal } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import uuid from 'react-native-uuid';
+import * as Yup from 'yup';
+
+import { Button } from '../../components/Form/Button';
+import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
+import { InputForm } from '../../components/Form/InputForm';
+import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
+import { CategorySelect } from '../CategorySelect';
+import { Container, Header, Title, Form, Fields, TransactionsType } from './styles';
 
 interface FormData {
   [name: string]: any;
@@ -31,6 +31,10 @@ export function Register() {
   const [transactionsType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
+  const { navigate }: NavigationProp<ParamListBase> = useNavigation();
+
+  const dataKey = '@gofinances:transactions';
+
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Category',
@@ -39,6 +43,7 @@ export function Register() {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
@@ -47,17 +52,15 @@ export function Register() {
   }
 
   function handleOpenSelectCategoryModal() {
-    console.log('b');
     setCategoryModalOpen(true);
   }
 
   function handleCloseSelectCategoryModal() {
-    console.log('a');
-
     setCategoryModalOpen(false);
   }
 
-  function handleRegister(form: FormData) {
+  // eslint-disable-next-line consistent-return
+  async function handleRegister(form: FormData) {
     if (!transactionsType) {
       return Alert.alert('Selecione o tipo da transação');
     }
@@ -66,13 +69,35 @@ export function Register() {
       return Alert.alert('Selecione a categoria');
     }
 
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
       transactionsType,
       category: category.key,
+      date: new Date(),
     };
-    console.log(data);
+
+    try {
+      const data = await AsyncStorage.getItem(dataKey);
+      const currentData = data ? JSON.parse(data) : [];
+
+      const dataFormatted = [...currentData, newTransaction];
+
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
+
+      reset();
+      setTransactionType('');
+      setCategory({
+        key: 'category',
+        name: 'Category',
+      });
+
+      navigate('Listagem');
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Não foi possivel salvar');
+    }
   }
 
   return (
@@ -116,7 +141,7 @@ export function Register() {
               />
             </TransactionsType>
 
-            <CategorySelectButton onPress={handleOpenSelectCategoryModal} title={category.name} />
+            <CategorySelectButton onPress={() => handleOpenSelectCategoryModal()} title={category.name} />
           </Fields>
 
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
@@ -126,7 +151,7 @@ export function Register() {
           <CategorySelect
             category={category}
             setCategory={setCategory}
-            closeSelectCategory={handleCloseSelectCategoryModal}
+            closeSelectCategory={() => handleCloseSelectCategoryModal()}
           />
         </Modal>
       </Container>
