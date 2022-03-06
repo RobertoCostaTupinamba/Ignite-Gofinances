@@ -1,12 +1,12 @@
-import styled from 'styled-components/native';
-import { FlatList, FlatListProps } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import Constants from 'expo-constants';
+import { FlatList, FlatListProps } from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import styled from 'styled-components/native';
 
 import { DataListProps } from './index';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
   flex: 1;

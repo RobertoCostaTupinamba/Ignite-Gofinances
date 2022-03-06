@@ -33,8 +33,6 @@ export function Register() {
 
   const { navigate }: NavigationProp<ParamListBase> = useNavigation();
 
-  const dataKey = '@gofinances:transactions';
-
   const [category, setCategory] = useState({
     key: 'category',
     name: 'Category',
@@ -79,6 +77,8 @@ export function Register() {
     };
 
     try {
+      const dataKey = '@gofinances:transactions';
+
       const data = await AsyncStorage.getItem(dataKey);
       const currentData = data ? JSON.parse(data) : [];
 
