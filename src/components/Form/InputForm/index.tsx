@@ -1,9 +1,9 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { TextInputProps } from 'react-native';
 import { Control, Controller } from 'react-hook-form';
+import { TextInputProps } from 'react-native';
 
 import { Input } from '../Input';
-
 import { Container, Error } from './styles';
 
 interface Props extends TextInputProps {

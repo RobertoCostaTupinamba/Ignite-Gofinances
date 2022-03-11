@@ -64,6 +64,8 @@ export function Register() {
       return Alert.alert('Selecione o tipo da transação');
     }
 
+    console.log(form);
+
     if (category.key === 'category') {
       return Alert.alert('Selecione a categoria');
     }
