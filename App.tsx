@@ -4,6 +4,7 @@ import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_700Bold } from
 import { NavigationContainer } from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 
 import theme from './src/global/styles/theme';
@@ -23,6 +24,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
+        <StatusBar barStyle="light-content" />
         <AppRoutes />
       </NavigationContainer>
     </ThemeProvider>
