@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { RectButtonProps } from 'react-native-gesture-handler';
 import { SvgProps } from 'react-native-svg';
 

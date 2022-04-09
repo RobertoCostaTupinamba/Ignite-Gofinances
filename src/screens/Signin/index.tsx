@@ -5,9 +5,12 @@ import AppleSvg from '../../assets/apple.svg';
 import GoogleSvg from '../../assets/google.svg';
 import LogoSvg from '../../assets/logo.svg';
 import SigninSocialButton from '../../components/SigninSocialButton';
+import { useAuth } from '../../hooks/auth';
 import { Container, Header, TitleWrapper, Title, SigninTitle, Footer, FooterWrapper } from './styles';
 
 function Signin() {
+  const { user } = useAuth();
+
   return (
     <Container>
       <Header>
