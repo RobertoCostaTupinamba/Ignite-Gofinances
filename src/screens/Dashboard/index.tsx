@@ -45,7 +45,7 @@ export function Dashboard() {
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
 
-  const { singOut } = useAuth();
+  const { singOut, user } = useAuth();
 
   const theme = useTheme();
 
@@ -196,10 +196,10 @@ export function Dashboard() {
           <Header>
             <UserWrapper>
               <UserInfo>
-                <Photo source={{ uri: 'https://avatars.githubusercontent.com/u/41094007?v=4' }} />
+                <Photo source={{ uri: user.photo }} />
                 <User>
                   <UserGreeting>Ola,</UserGreeting>
-                  <UserName>Roberto</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
 

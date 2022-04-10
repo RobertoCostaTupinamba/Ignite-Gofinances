@@ -7,7 +7,7 @@ import { StatusBar } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 
 import theme from './src/global/styles/theme';
-import { AuthProvider } from './src/hooks/auth';
+import { AuthProvider, useAuth } from './src/hooks/auth';
 import Routes from './src/routes';
 
 export default function App() {
@@ -17,7 +17,9 @@ export default function App() {
     Poppins_700Bold,
   });
 
-  if (!fontsLoaded) {
+  const { userStorageLoader } = useAuth();
+
+  if (!fontsLoaded || userStorageLoader) {
     return <AppLoading />;
   }
 
