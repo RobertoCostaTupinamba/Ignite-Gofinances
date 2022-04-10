@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
+import { useAuth } from '../../hooks/auth';
 import {
   Container,
   Header,
@@ -43,6 +44,8 @@ export function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
+
+  const { singOut } = useAuth();
 
   const theme = useTheme();
 
@@ -202,7 +205,7 @@ export function Dashboard() {
 
               <LogoutButton
                 onPress={() => {
-                  console.log('á');
+                  singOut();
                 }}>
                 <Icon name="power" />
               </LogoutButton>
