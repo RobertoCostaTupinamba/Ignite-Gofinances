@@ -10,11 +10,21 @@ import { useAuth } from '../../hooks/auth';
 import { Container, Header, TitleWrapper, Title, SigninTitle, Footer, FooterWrapper } from './styles';
 
 function Signin() {
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, signInWithApple } = useAuth();
 
   async function handleSignInWithGoogle() {
     try {
       await signInWithGoogle();
+    } catch (error) {
+      console.log(error);
+
+      Alert.alert('Erro ao fazer login', 'Ocorreu um erro ao fazer login, tente novamente.');
+    }
+  }
+
+  async function handleSignInWithApple() {
+    try {
+      await signInWithApple();
     } catch (error) {
       console.log(error);
 
@@ -44,7 +54,7 @@ function Signin() {
         <FooterWrapper>
           <SigninSocialButton title="Entrar com Google" svg={GoogleSvg} onPress={() => handleSignInWithGoogle()} />
 
-          <SigninSocialButton title="Entrar com Apple" svg={AppleSvg} />
+          <SigninSocialButton title="Entrar com Apple" svg={AppleSvg} onPress={() => handleSignInWithApple()} />
         </FooterWrapper>
       </Footer>
     </Container>

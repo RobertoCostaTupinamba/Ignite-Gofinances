@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import * as AuthSession from 'expo-auth-session';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
@@ -25,6 +28,7 @@ interface User {
 interface IAuthContextData {
   user: User;
   signInWithGoogle(): Promise<void>;
+  signInWithApple(): Promise<void>;
 }
 
 const AuthContext = createContext({} as IAuthContextData);
@@ -48,19 +52,48 @@ function AuthProvider({ children }: AuthProviderProps) {
 
         const userInfo = await response.json();
 
-        setUser({
+        const userLogged = {
           id: userInfo.id,
           email: userInfo.email,
           name: userInfo.given_name,
           photo: userInfo.picture,
-        });
+        };
+
+        setUser(userLogged);
+
+        await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged));
       }
     } catch (error: any) {
       throw new Error(error);
     }
   }
 
-  return <AuthContext.Provider value={{ user, signInWithGoogle }}>{children}</AuthContext.Provider>;
+  // perform social login with apple authentication
+  async function signInWithApple() {
+    try {
+      const credentials = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      if (credentials) {
+        const userLogged = {
+          id: String(credentials.user),
+          email: credentials.email!,
+          name: credentials.fullName!.givenName!,
+          photo: undefined,
+        };
+        setUser(userLogged);
+        await AsyncStorage.setItem('@gofinances:user', JSON.stringify(userLogged));
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+
+  return <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>{children}</AuthContext.Provider>;
 }
 
 function useAuth() {
